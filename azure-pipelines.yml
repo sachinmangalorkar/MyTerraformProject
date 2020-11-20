@@ -1,0 +1,61 @@
+stages:
+  - stage: validate
+
+    jobs:
+      - job: validate
+        continueOnError: false
+        steps:
+         
+          - task: TerraformInstaller@0
+            displayName: Terraform Install
+            inputs:
+              terraformVersion: '0.12.3'
+          - task: TerraformTaskV1@0
+            displayName: Terraform Init
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'BLDC_POC (5a825fe0-c29b-42cb-9d14-75b5e949a73e)'
+              backendAzureRmResourceGroupName: 'DefaultResourceGroup-EUS2'
+              backendAzureRmStorageAccountName: 'myproject01storage'
+              backendAzureRmContainerName: 'container01'
+              backendAzureRmKey: 'terraform.tfstate'
+  
+  - stage: deploy
+    jobs:
+    - deployment: deploy_terraform
+      continueOnError: false
+      environment: 'dev'
+      strategy:
+        runOnce: 
+          deploy:
+            steps:
+              - checkout: self
+              - task: TerraformInstaller@0
+                displayName: Terraform install
+                inputs:
+                  terraformVersion: '0.12.3'
+              - task: TerraformTaskV1@0
+                displayName: Init
+                inputs:
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: 'BLDC_POC (5a825fe0-c29b-42cb-9d14-75b5e949a73e)'
+                  backendAzureRmResourceGroupName: 'DefaultResourceGroup-EUS2'
+                  backendAzureRmStorageAccountName: 'myproject01storage'
+                  backendAzureRmContainerName: 'container01'
+                  backendAzureRmKey: 'terraform.tfstate'
+              - task: TerraformTaskV1@0
+                displayName: Plan
+                inputs:
+                  provider: 'azurerm'
+                  command: 'plan'
+                  environmentServiceNameAzureRM: 'BLDC_POC (5a825fe0-c29b-42cb-9d14-75b5e949a73e)'
+
+              - task: TerraformTaskV1@0
+                displayName: Apply
+                inputs:
+                  provider: 'azurerm'
+                  command: 'apply'
+                  commandOptions: '-auto-approve'
+                  environmentServiceNameAzureRM: 'BLDC_POC (5a825fe0-c29b-42cb-9d14-75b5e949a73e)'
