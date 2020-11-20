@@ -43,3 +43,15 @@ module "create_dbserver" {
     admin_password = "${var.admin_password}"
     
 }
+  
+  terraform {
+    backend "azurerm" {
+        resource_group_name = "DefaultResourceGroup-EUS2"
+        storage_account_name = "myproject01storage"
+        container_name = "container01"
+        key = "terraform.tfstate"
+
+      
+    }
+  
+}
