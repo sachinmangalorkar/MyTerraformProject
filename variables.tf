@@ -5,7 +5,7 @@ variable "location" {
 
 variable "rg_network" {
  description = "The name of the resource group in which the resources will be created"
- default     = "Project01RG"
+ default     = "Project02RG"
 }
 
 variable "admin_user" {
@@ -15,5 +15,5 @@ variable "admin_user" {
 
 variable "admin_password" {
    description = "Default password for admin account"
-   default = "Sp1jk3R!@12#"
+   default = "cloudadmin@12"
 }
