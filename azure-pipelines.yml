@@ -1,5 +1,5 @@
 stages:
-  - stage: validate
+  - stage: Validate
 
     jobs:
       - job: validate
@@ -20,10 +20,15 @@ stages:
               backendAzureRmStorageAccountName: 'myproject01storage'
               backendAzureRmContainerName: 'container01'
               backendAzureRmKey: 'terraform.tfstate'
-  
-  - stage: deploy
+          - task: TerraformTaskV1@0
+            displayName: Validate
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+
+  - stage: Deploy
     jobs:
-    - deployment: deploy_terraform
+    - deployment: deploying_terraform
       continueOnError: false
       environment: 'dev'
       strategy:
