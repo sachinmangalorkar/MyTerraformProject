@@ -10,7 +10,7 @@ variable "rg_network" {
 
 variable "admin_user" {
    description = "User name to use as the admin account on the VMs that will be part of the VM Scale Set"
-   default     = "azureuser"
+   default     = "cloudadmin"
 }
 
 variable "admin_password" {
