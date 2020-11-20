@@ -5,7 +5,7 @@ variable "location" {
 
 variable "rg_network" {
  description = "The name of the resource group in which the resources will be created"
- default     = "Project02RG"
+ default     = "Project01RG"
 }
 
 variable "admin_user" {
